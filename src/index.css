@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Hide scrollbar for horizontal scroll containers */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom selection color */
+::selection {
+  background-color: rgb(113 113 122);
+  color: white;
+}
+
+/* Ensure proper touch scrolling on mobile */
+@supports (-webkit-touch-callout: none) {
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+}

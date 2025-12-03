@@ -1,0 +1,1314 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { 
+  ArrowUpRight, 
+  MapPin, 
+  Phone, 
+  Mail, 
+  Menu, 
+  X, 
+  Filter, 
+  Building2, 
+  TrendingUp, 
+  Globe, 
+  Sun, 
+  Moon, 
+  ChevronDown,
+  Check,
+  XCircle,
+  Thermometer,
+  Droplets,
+  Flame,
+  GraduationCap,
+  BarChart3,
+  Calculator,
+  Percent,
+  DollarSign
+} from 'lucide-react';
+
+/**
+ * KATRINA WANG REAL ESTATE
+ * Professional Portfolio with I18n & Theming
+ * Enhanced with Analytics, Testimonials, Market Dashboard & Mortgage Calc
+ * Optimized for Mobile & Visuals
+ */
+
+// --- Translations ---
+const TRANSLATIONS = {
+  en: {
+    nav: { home: "Home", properties: "Properties", about: "About", contact: "Contact" },
+    hero: {
+      subtitle: "Chase Global Realty",
+      title: ["CONFIDENCE", "TRUST &", "RESULTS."],
+      desc: "Our goal is simple: to make sure that every sale is successful, important, and seamless—for every client, every time.",
+      cta_collection: "The Collection",
+      cta_contact: "Contact Katrina",
+      stats_exp: "Years Experience",
+      stats_area: "Five Boroughs"
+    },
+    market: {
+      title: "Market Pulse",
+      stats: [
+        { label: "Avg Days on Market", value: 24, suffix: " Days" },
+        { label: "Flushing Price/SqFt", value: 1380, prefix: "$" },
+        { label: "List-to-Sale Ratio", value: 98, suffix: "%" },
+        { label: "Active Listings", value: 142, suffix: "+" }
+      ]
+    },
+    about: {
+      section: "The Agent",
+      role: "Licensed Salesperson | Chase Global Realty",
+      bio: "I'm honored to be a trusted representation for buyers, sellers, and investors in the five boroughs of New York, having worked in the real estate industry for 19 years. I bring a solid understanding of pricing techniques, area qualities, and market trends to my work as a licensed salesperson for Chase Global Realty.",
+      cards: {
+        portfolio: "Diverse Portfolio",
+        portfolio_desc: "Successfully managed luxury homes, modern condos, and professional business buildings.",
+        investment: "Investment Analysis",
+        investment_desc: "Extensive knowledge of land development to help customers make wise, long-term decisions."
+      },
+      quote: "I offer helpful advice, excellent negotiating skills, and a dedication to helping you get the best result."
+    },
+    properties: {
+      section: "Featured Properties",
+      filter: { all: "All Listings", active: "Active", sold: "Sold", underContract: "Under Contract" },
+      status: { active: "Active", underContract: "Under Contract", sold: "Sold" },
+      count: "PROPERTIES",
+      details: {
+        learnMore: "Learn More",
+        analytics: "Analytics & Risks",
+        schools: "Education",
+        history: "Price History",
+        risks: "Environmental Factors"
+      }
+    },
+    calculator: {
+      title: "Mortgage Estimator",
+      price: "Property Price",
+      downPayment: "Down Payment",
+      rate: "Interest Rate",
+      monthly: "Est. Monthly"
+    },
+    testimonials: {
+      section: "Client Perspectives"
+    },
+    contact: {
+      section: "Get in Touch",
+      desc: "Whether your goal is to invest, downsize, upgrade, or just explore all of the options, I am here to help.",
+      labels: { phone: "Phone", email: "Email", office: "Office" },
+      form: {
+        name: "Name",
+        email: "Email",
+        interest: "I am interested in...",
+        submit: "Submit Inquiry"
+      },
+      options: [
+        "Selling my property",
+        "Buying a home",
+        "Commercial Investment",
+        "Market Analysis"
+      ]
+    },
+    footer: {
+      navigate: "Navigate",
+      connect: "Connect",
+      rights: "© 2024 KATRINA WANG REAL ESTATE.",
+      license: "NY LICENSED SALESPERSON"
+    }
+  },
+  zh: {
+    nav: { home: "首页", properties: "精选房源", about: "关于我", contact: "联系方式" },
+    hero: {
+      subtitle: "Chase Global Realty / 凯业地产",
+      title: ["信心", "信任 &", "卓越成果"],
+      desc: "我们的目标很简单：确保每一笔交易都成功、重要且顺畅——无论客户是谁，始终如一。",
+      cta_collection: "浏览房源",
+      cta_contact: "联系 Katrina",
+      stats_exp: "年从业经验",
+      stats_area: "服务纽约五区"
+    },
+    market: {
+      title: "市场动态",
+      stats: [
+        { label: "平均在市天数", value: 24, suffix: " 天" },
+        { label: "法拉盛均价/平方英尺", value: 1380, prefix: "$" },
+        { label: "挂牌成交率", value: 98, suffix: "%" },
+        { label: "活跃房源", value: 142, suffix: "+" }
+      ]
+    },
+    about: {
+      section: "关于经纪人",
+      role: "持牌房地产经纪人 | Chase Global Realty",
+      bio: "我很荣幸能在纽约五区为买家、卖家和投资者提供值得信赖的代理服务，拥有19年的房地产行业经验。作为皇后区领先房地产公司 Chase Global Realty 的持牌销售人员，我为工作带来了对定价技巧、区域特质和市场趋势的深刻理解。",
+      cards: {
+        portfolio: "多元化投资组合",
+        portfolio_desc: "成功管理豪宅、现代公寓和专业商业楼宇。",
+        investment: "投资分析",
+        investment_desc: "拥有丰富的土地开发知识，帮助客户做出明智的长期决策。"
+      },
+      quote: "我提供有益的建议、出色的谈判技巧，并致力于帮助您获得最佳结果。"
+    },
+    properties: {
+      section: "精选房源",
+      filter: { all: "全部房源", active: "在售", sold: "已售", underContract: "合同中" },
+      status: { active: "在售", underContract: "合同中", sold: "已售" },
+      count: "套房源",
+      details: {
+        learnMore: "了解更多",
+        analytics: "分析与风险",
+        schools: "教育资源",
+        history: "价格历史",
+        risks: "环境因素"
+      }
+    },
+    calculator: {
+      title: "房贷估算器",
+      price: "房屋价格",
+      downPayment: "首付比例",
+      rate: "贷款利率",
+      monthly: "预估月供"
+    },
+    testimonials: {
+      section: "客户评价"
+    },
+    contact: {
+      section: "联系我们",
+      desc: "无论您的目标是投资、置换小房、升级大房，还是仅仅想了解所有选择，我都随时为您提供帮助。",
+      labels: { phone: "电话", email: "邮箱", office: "办公室" },
+      form: {
+        name: "姓名",
+        email: "电子邮箱",
+        interest: "我很感兴趣...",
+        submit: "提交咨询"
+      },
+      options: [
+        "出售房产",
+        "购买住宅",
+        "商业投资",
+        "市场分析"
+      ]
+    },
+    footer: {
+      navigate: "导航",
+      connect: "连接",
+      rights: "© 2024 KATRINA WANG REAL ESTATE.",
+      license: "纽约持牌房地产经纪人"
+    }
+  }
+};
+
+// --- Mock Data ---
+
+const PROPERTIES = [
+  {
+    id: 1,
+    title: "The Skyview Penthouse",
+    location: "Flushing, NY",
+    price: "$2,500,000",
+    priceRaw: 2500000,
+    status: "active",
+    type: "Luxury Condo",
+    specs: { beds: 3, baths: 3, sqft: 1800 },
+    image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1000&auto=format&fit=crop",
+    analytics: {
+      daysOnMarket: 12,
+      pricePerSqFt: 1388,
+      appreciation: "+5.2%",
+      risks: { flood: 10, fire: 30, heat: 45 }, // out of 100
+      schools: [
+        { name: "PS 20 John Bowne", rating: 8, distance: "0.3mi" },
+        { name: "JHS 189 Daniel Carter", rating: 7, distance: "0.5mi" },
+        { name: "Flushing High School", rating: 6, distance: "0.8mi" }
+      ],
+      history: [
+        { date: '2020', price: 2.1 },
+        { date: '2021', price: 2.2 },
+        { date: '2022', price: 2.25 },
+        { date: '2023', price: 2.35 },
+        { date: '2024', price: 2.5 }
+      ]
+    }
+  },
+  {
+    id: 2,
+    title: "Commercial Hub",
+    location: "Long Island City, NY",
+    price: "$8,200,000",
+    priceRaw: 8200000,
+    status: "active",
+    type: "Commercial",
+    specs: { beds: 0, baths: 4, sqft: 12000 },
+    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000&auto=format&fit=crop",
+    analytics: {
+      daysOnMarket: 45,
+      pricePerSqFt: 683,
+      appreciation: "+12.1%",
+      risks: { flood: 60, fire: 20, heat: 50 },
+      schools: [],
+      history: [
+        { date: '2020', price: 6.5 },
+        { date: '2021', price: 6.8 },
+        { date: '2022', price: 7.2 },
+        { date: '2023', price: 7.8 },
+        { date: '2024', price: 8.2 }
+      ]
+    }
+  },
+  {
+    id: 5,
+    title: "Whitestone Waterfront",
+    location: "Whitestone, NY",
+    price: "$4,500,000",
+    priceRaw: 4500000,
+    status: "sold",
+    type: "Waterfront",
+    specs: { beds: 5, baths: 5, sqft: 5000 },
+    image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1000&auto=format&fit=crop",
+    analytics: {
+      daysOnMarket: 90,
+      pricePerSqFt: 900,
+      appreciation: "+2.8%",
+      risks: { flood: 85, fire: 10, heat: 30 },
+      schools: [
+        { name: "PS 193 Alfred Kennedy", rating: 7, distance: "0.6mi" }
+      ],
+      history: [
+        { date: '2020', price: 3.9 },
+        { date: '2021', price: 4.1 },
+        { date: '2022', price: 4.2 },
+        { date: '2023', price: 4.4 },
+        { date: '2024', price: 4.5 }
+      ]
+    }
+  },
+  {
+    id: 6,
+    title: "Main St Retail",
+    location: "Flushing, NY",
+    price: "$5,400,000",
+    priceRaw: 5400000,
+    status: "sold",
+    type: "Commercial",
+    specs: { beds: 0, baths: 2, sqft: 3500 },
+    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1000&auto=format&fit=crop",
+    analytics: {
+      daysOnMarket: 15,
+      pricePerSqFt: 1542,
+      appreciation: "+8.5%",
+      risks: { flood: 20, fire: 50, heat: 70 },
+      schools: [],
+      history: [
+        { date: '2020', price: 4.5 },
+        { date: '2021', price: 4.8 },
+        { date: '2022', price: 5.0 },
+        { date: '2023', price: 5.2 },
+        { date: '2024', price: 5.4 }
+      ]
+    }
+  },
+  {
+    id: 7,
+    title: "Coming Soon",
+    location: "Queens, NY",
+    price: "Inquire",
+    priceRaw: 0,
+    status: "underContract",
+    type: "Placeholder",
+    specs: { beds: 0, baths: 0, sqft: 0 },
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000&auto=format&fit=crop",
+    analytics: {
+      daysOnMarket: 0,
+      pricePerSqFt: 0,
+      appreciation: "0%",
+      risks: { flood: 0, fire: 0, heat: 0 },
+      schools: [],
+      history: []
+    }
+  },
+  {
+    id: 8,
+    title: "Coming Soon",
+    location: "Long Island, NY",
+    price: "Inquire",
+    priceRaw: 0,
+    status: "underContract",
+    type: "Placeholder",
+    specs: { beds: 0, baths: 0, sqft: 0 },
+    image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1000&auto=format&fit=crop",
+    analytics: {
+      daysOnMarket: 0,
+      pricePerSqFt: 0,
+      appreciation: "0%",
+      risks: { flood: 0, fire: 0, heat: 0 },
+      schools: [],
+      history: []
+    }
+  }
+];
+
+const TESTIMONIALS = [
+  {
+    id: 1,
+    quote: "Katrina turned a complex commercial transaction into a seamless success. Her market knowledge in Flushing is unmatched.",
+    author: "James L.",
+    role: "Property Developer"
+  },
+  {
+    id: 2,
+    quote: "Precision, discretion, and results. I've worked with many agents in NY, but Katrina operates on a different level.",
+    author: "Sarah Chen",
+    role: "Investor"
+  },
+  {
+    id: 3,
+    quote: "She didn't just sell our home; she curated a strategy that set a new price record for our block. Truly exceptional.",
+    author: "The Rodriguez Family",
+    role: "Sellers, Forest Hills"
+  }
+];
+
+// --- Animation Components ---
+
+const Reveal = ({ children, delay = 0, className = "" }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={`transform transition-all duration-1000 ease-out ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+      } ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+};
+
+const CountUp = ({ end, duration = 2000, prefix = "", suffix = "" }) => {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    let startTime;
+    let animationFrame;
+
+    const animate = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const progress = timestamp - startTime;
+      const percentage = Math.min(progress / duration, 1);
+      
+      const easeOutQuart = (x) => 1 - Math.pow(1 - x, 4);
+      
+      setCount(Math.floor(easeOutQuart(percentage) * end));
+
+      if (progress < duration) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(animationFrame);
+  }, [isVisible, end, duration]);
+
+  return (
+    <span ref={ref}>
+      {prefix}{count}{suffix}
+    </span>
+  );
+};
+
+// --- Custom Components ---
+
+const Button = ({ children, onClick, className = "", secondary = false, isDark }) => {
+  const baseClasses = "relative px-8 py-4 overflow-hidden group border transition-all duration-300";
+  const darkClasses = secondary 
+    ? "border-white/20 bg-transparent text-white hover:text-black" 
+    : "border-white/20 bg-white text-black hover:text-white";
+  const lightClasses = secondary
+    ? "border-black/20 bg-transparent text-black hover:text-white"
+    : "border-black/20 bg-black text-white hover:text-black";
+
+  const hoverBgDark = secondary ? "bg-white" : "bg-black";
+  const hoverBgLight = secondary ? "bg-black" : "bg-white";
+
+  return (
+    <button 
+      onClick={onClick}
+      className={`${baseClasses} ${isDark ? darkClasses : lightClasses} ${className}`}
+    >
+      <span className={`absolute inset-0 w-0 transition-all duration-[400ms] ease-out group-hover:w-full ${isDark ? hoverBgDark : hoverBgLight}`}></span>
+      <span className="relative uppercase tracking-widest text-xs font-bold flex items-center gap-2 z-10">
+        {children}
+      </span>
+    </button>
+  );
+};
+
+const CustomDropdown = ({ options, value, onChange, isDark, placeholder }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div className="relative w-full" ref={dropdownRef}>
+      <div 
+        onClick={() => setIsOpen(!isOpen)}
+        className={`
+          w-full border-b py-3 text-lg flex justify-between items-center cursor-pointer transition-colors duration-300
+          ${isDark 
+            ? 'border-zinc-700 text-white hover:border-white' 
+            : 'border-zinc-300 text-black hover:border-black'}
+        `}
+      >
+        <span className={!value ? "text-zinc-500" : ""}>{value || placeholder}</span>
+        <ChevronDown size={16} className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+      </div>
+      
+      {isOpen && (
+        <div className={`
+          absolute top-full left-0 w-full z-50 max-h-60 overflow-y-auto mt-2 border shadow-xl animate-in fade-in slide-in-from-top-2 duration-200
+          ${isDark 
+            ? 'bg-zinc-900 border-zinc-800 text-white' 
+            : 'bg-white border-zinc-200 text-black'}
+        `}>
+          {options.map((option) => (
+            <div
+              key={option}
+              onClick={() => {
+                onChange(option);
+                setIsOpen(false);
+              }}
+              className={`
+                px-4 py-3 cursor-pointer text-sm uppercase tracking-wide flex justify-between items-center transition-colors
+                ${isDark ? 'hover:bg-zinc-800' : 'hover:bg-zinc-50'}
+              `}
+            >
+              {option}
+              {value === option && <Check size={14} />}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+const SimpleLineChart = ({ data, isDark }) => {
+  if (!data || data.length === 0) return (
+    <div className="h-48 flex items-center justify-center text-zinc-500 font-mono text-xs">No Data Available</div>
+  );
+
+  const prices = data.map(d => d.price);
+  const minPrice = Math.min(...prices) * 0.9;
+  const maxPrice = Math.max(...prices) * 1.1;
+  const padding = 20;
+  const width = 100; // viewBox width units
+  const height = 60; // viewBox height units
+
+  // Create points string
+  const points = data.map((d, i) => {
+    const x = (i / (data.length - 1)) * width;
+    const y = height - ((d.price - minPrice) / (maxPrice - minPrice)) * height;
+    return `${x},${y}`;
+  }).join(' ');
+
+  return (
+    <div className="w-full h-48 relative">
+      <svg viewBox={`0 0 ${width} ${height + 10}`} className="w-full h-full overflow-visible">
+        {/* Line */}
+        <polyline
+          points={points}
+          fill="none"
+          stroke={isDark ? "white" : "black"}
+          strokeWidth="1.5"
+          vectorEffect="non-scaling-stroke"
+        />
+        {/* Points */}
+        {data.map((d, i) => {
+          const x = (i / (data.length - 1)) * width;
+          const y = height - ((d.price - minPrice) / (maxPrice - minPrice)) * height;
+          return (
+            <g key={i}>
+              <circle cx={x} cy={y} r="2" fill={isDark ? "black" : "white"} stroke={isDark ? "white" : "black"} strokeWidth="1" vectorEffect="non-scaling-stroke" />
+              {/* Tooltip-like label */}
+              <text x={x} y={y - 5} textAnchor="middle" fontSize="4" fill={isDark ? "white" : "black"} className="font-mono">
+                {d.price}M
+              </text>
+              <text x={x} y={height + 8} textAnchor="middle" fontSize="3" fill={isDark ? "#71717a" : "#a1a1aa"} className="font-mono">
+                {d.date}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+};
+
+const SectionHeading = ({ number, title, isDark }) => (
+  <Reveal>
+    <div className={`flex flex-col md:flex-row items-baseline gap-4 mb-16 border-b pb-6 ${isDark ? 'border-white/10' : 'border-black/10'}`}>
+      <span className="font-mono text-zinc-500 text-sm">({number})</span>
+      <h2 className={`text-3xl md:text-5xl font-light tracking-tighter uppercase ${isDark ? 'text-white' : 'text-black'}`}>{title}</h2>
+    </div>
+  </Reveal>
+);
+
+const PropertyCard = ({ property, t, isDark, index, onClick }) => {
+  return (
+    <Reveal delay={index * 100}>
+      <div onClick={onClick} className="group relative w-full cursor-pointer overflow-hidden">
+        <div className={`aspect-[3/4] overflow-hidden relative ${isDark ? 'bg-zinc-900' : 'bg-zinc-100'}`}>
+          <div className="absolute top-4 right-4 z-20 flex gap-2">
+             {property.status === 'sold' && (
+               <span className={`px-3 py-1 text-xs font-bold uppercase tracking-widest ${isDark ? 'bg-white text-black' : 'bg-black text-white'}`}>
+                 {t.properties.status.sold}
+               </span>
+             )}
+             {property.status === 'active' && (
+               <span className={`px-3 py-1 text-xs font-bold uppercase tracking-widest border ${isDark ? 'bg-black text-white border-white/20' : 'bg-white text-black border-black/20'}`}>
+                 {t.properties.status.active}
+               </span>
+             )}
+             {property.status === 'underContract' && (
+               <span className={`px-3 py-1 text-xs font-bold uppercase tracking-widest border ${isDark ? 'bg-zinc-800 text-zinc-300 border-white/20' : 'bg-zinc-200 text-zinc-600 border-black/20'}`}>
+                 {t.properties.status.underContract}
+               </span>
+             )}
+          </div>
+          
+          <img 
+            src={property.image} 
+            alt={property.title}
+            className="w-full h-full object-cover transition-all duration-1000 ease-in-out group-hover:scale-105 group-hover:grayscale-0 grayscale opacity-90 group-hover:opacity-100"
+          />
+          
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center backdrop-blur-sm bg-black/40">
+             <div className={`border p-8 text-center bg-black/50 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ${isDark ? 'border-white/30 text-white' : 'border-white/30 text-white'}`}>
+               <p className="text-2xl font-light mb-2">{property.price}</p>
+               <div className="flex gap-4 text-xs font-mono uppercase tracking-widest text-zinc-300 mb-6">
+                 <span>{property.specs.beds} Beds</span>
+                 <span>{property.specs.baths} Baths</span>
+                 <span>{property.specs.sqft} Sqft</span>
+               </div>
+               <span className="text-xs font-bold uppercase tracking-widest border border-white px-4 py-2 hover:bg-white hover:text-black transition-colors">
+                 {t.properties.details.learnMore}
+               </span>
+             </div>
+          </div>
+        </div>
+
+        <div className={`mt-4 flex justify-between items-start border-t pt-4 ${isDark ? 'border-zinc-800' : 'border-zinc-200'}`}>
+          <div>
+            <h3 className={`text-xl font-medium tracking-tight transition-colors ${isDark ? 'text-white group-hover:text-zinc-400' : 'text-black group-hover:text-zinc-600'}`}>{property.title}</h3>
+            <div className="flex items-center gap-1 text-zinc-500 mt-1">
+              <MapPin size={12} />
+              <p className="text-xs uppercase tracking-wider">{property.location}</p>
+            </div>
+          </div>
+          <ArrowUpRight className={`transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 ${isDark ? 'text-zinc-600 group-hover:text-white' : 'text-zinc-400 group-hover:text-black'}`} />
+        </div>
+      </div>
+    </Reveal>
+  );
+};
+
+// --- New Features Components ---
+
+const MarketInsights = ({ t, isDark }) => (
+  <div className={`py-20 border-t ${isDark ? 'border-white/5 bg-zinc-950' : 'border-black/5 bg-zinc-50'}`}>
+     <div className="max-w-[1800px] mx-auto px-6 md:px-12">
+        <h3 className={`text-xs font-mono uppercase tracking-[0.2em] mb-12 ${isDark ? 'text-zinc-500' : 'text-zinc-400'}`}>
+          {t.market.title}
+        </h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+           {t.market.stats.map((stat, i) => (
+             <div key={i} className="flex flex-col gap-2">
+                <span className={`text-4xl md:text-6xl font-light tracking-tighter ${isDark ? 'text-white' : 'text-black'}`}>
+                   <CountUp end={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
+                </span>
+                <span className={`text-xs uppercase tracking-widest ${isDark ? 'text-zinc-500' : 'text-zinc-500'}`}>
+                  {stat.label}
+                </span>
+             </div>
+           ))}
+        </div>
+     </div>
+  </div>
+);
+
+const MortgageCalculator = ({ price, isDark, t }) => {
+  const [downPaymentPercent, setDownPaymentPercent] = useState(20);
+  const [interestRate, setInterestRate] = useState(6.5);
+  const [loanTerm, setLoanTerm] = useState(30);
+
+  const calculateMonthlyPayment = () => {
+    const principal = price * (1 - downPaymentPercent / 100);
+    const monthlyRate = interestRate / 100 / 12;
+    const numberOfPayments = loanTerm * 12;
+
+    if (interestRate === 0) return principal / numberOfPayments;
+
+    const monthlyPayment =
+      (principal * monthlyRate) /
+      (1 - Math.pow(1 + monthlyRate, -numberOfPayments));
+
+    return Math.round(monthlyPayment).toLocaleString();
+  };
+
+  return (
+    <div className={`p-8 border ${isDark ? 'border-white/10 bg-zinc-900/20' : 'border-black/10 bg-zinc-50'}`}>
+      <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+        <Calculator size={18} />
+        {t.calculator.title}
+      </h3>
+
+      <div className="space-y-8">
+        <div>
+           <div className="flex justify-between text-xs font-mono uppercase mb-2 text-zinc-500">
+             <span>{t.calculator.price}</span>
+             <span>${price.toLocaleString()}</span>
+           </div>
+           <div className={`h-1 w-full ${isDark ? 'bg-zinc-800' : 'bg-zinc-300'}`}></div>
+        </div>
+
+        <div>
+           <div className="flex justify-between text-xs font-mono uppercase mb-2">
+             <span>{t.calculator.downPayment}</span>
+             <span>{downPaymentPercent}%</span>
+           </div>
+           <input 
+             type="range" 
+             min="0" 
+             max="80" 
+             value={downPaymentPercent} 
+             onChange={(e) => setDownPaymentPercent(Number(e.target.value))}
+             className="w-full h-2 bg-zinc-600 rounded-lg appearance-none cursor-pointer accent-white"
+           />
+        </div>
+
+        <div>
+           <div className="flex justify-between text-xs font-mono uppercase mb-2">
+             <span>{t.calculator.rate}</span>
+             <span>{interestRate}%</span>
+           </div>
+           <input 
+             type="range" 
+             min="1" 
+             max="10" 
+             step="0.1"
+             value={interestRate} 
+             onChange={(e) => setInterestRate(Number(e.target.value))}
+             className="w-full h-2 bg-zinc-600 rounded-lg appearance-none cursor-pointer accent-white"
+           />
+        </div>
+
+        <div className={`pt-6 mt-6 border-t ${isDark ? 'border-white/10' : 'border-black/10'}`}>
+          <div className="flex justify-between items-baseline">
+             <span className="text-sm font-mono uppercase text-zinc-500">{t.calculator.monthly}</span>
+             <span className="text-3xl font-light">${calculateMonthlyPayment()}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const PropertyDetailOverlay = ({ property, onClose, isDark, t }) => {
+  if (!property) return null;
+
+  return (
+    <div className={`fixed inset-0 z-[60] overflow-y-auto animate-in fade-in duration-300 ${isDark ? 'bg-black' : 'bg-white'}`}>
+      <button 
+        onClick={onClose}
+        className={`fixed top-4 right-4 md:top-8 md:right-8 z-50 p-2 rounded-full transition-transform hover:scale-110 ${isDark ? 'bg-white text-black' : 'bg-black text-white'}`}
+      >
+        <X size={24} />
+      </button>
+
+      <div className="max-w-[1200px] mx-auto pb-24">
+        {/* Hero */}
+        <div className="h-[50vh] md:h-[60vh] relative w-full overflow-hidden">
+          <img src={property.image} className="w-full h-full object-cover" alt={property.title} />
+          <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 bg-gradient-to-t from-black/80 to-transparent">
+             <h2 className="text-3xl md:text-6xl font-light text-white mb-2 leading-tight">{property.title}</h2>
+             <p className="text-lg md:text-xl text-zinc-300 font-mono">{property.location}</p>
+          </div>
+        </div>
+
+        <div className={`p-6 md:p-12 grid grid-cols-1 md:grid-cols-12 gap-12 ${isDark ? 'text-white' : 'text-black'}`}>
+           {/* Left Col: Details */}
+           <div className="md:col-span-7 space-y-12">
+              <div>
+                <h3 className="text-2xl font-light uppercase tracking-widest mb-6 border-b pb-4 border-current opacity-30">{t.properties.details.analytics}</h3>
+                <div className="grid grid-cols-2 gap-6">
+                  <div className={`p-6 border ${isDark ? 'border-white/10 bg-zinc-900/50' : 'border-black/10 bg-zinc-50'}`}>
+                    <span className="text-xs font-mono uppercase text-zinc-500 block mb-2">Days on Market</span>
+                    <span className="text-3xl font-light">{property.analytics.daysOnMarket}</span>
+                  </div>
+                  <div className={`p-6 border ${isDark ? 'border-white/10 bg-zinc-900/50' : 'border-black/10 bg-zinc-50'}`}>
+                    <span className="text-xs font-mono uppercase text-zinc-500 block mb-2">$/SqFt</span>
+                    <span className="text-3xl font-light">${property.analytics.pricePerSqFt}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-2xl font-light uppercase tracking-widest mb-6 border-b pb-4 border-current opacity-30">{t.properties.details.history}</h3>
+                <SimpleLineChart data={property.analytics.history} isDark={isDark} />
+              </div>
+
+              <div>
+                 <h3 className="text-2xl font-light uppercase tracking-widest mb-6 border-b pb-4 border-current opacity-30">{t.properties.details.schools}</h3>
+                 <div className="space-y-4">
+                   {property.analytics.schools.length > 0 ? property.analytics.schools.map((school, i) => (
+                     <div key={i} className="flex items-center justify-between group">
+                        <div className="flex items-center gap-4">
+                          <GraduationCap size={18} className="text-zinc-500" />
+                          <span className="font-light">{school.name}</span>
+                        </div>
+                        <div className="flex items-center gap-4">
+                           <span className="text-xs font-mono text-zinc-500">{school.distance}</span>
+                           <span className={`w-8 h-8 flex items-center justify-center text-xs font-bold rounded-full ${school.rating >= 8 ? 'bg-green-500 text-white' : 'bg-yellow-500 text-black'}`}>
+                             {school.rating}
+                           </span>
+                        </div>
+                     </div>
+                   )) : <p className="text-zinc-500 italic">No school data available for this area.</p>}
+                 </div>
+              </div>
+           </div>
+
+           {/* Right Col: Risks & Actions */}
+           <div className="md:col-span-5 space-y-12">
+              <div className={`p-8 border ${isDark ? 'border-white/10 bg-zinc-900/20' : 'border-black/10 bg-zinc-50'}`}>
+                 <h3 className="text-xl font-bold mb-6">{property.price}</h3>
+                 <div className="space-y-4 mb-8">
+                    <div className="flex justify-between border-b border-current/10 pb-2">
+                       <span className="text-zinc-500">Bedrooms</span>
+                       <span>{property.specs.beds}</span>
+                    </div>
+                    <div className="flex justify-between border-b border-current/10 pb-2">
+                       <span className="text-zinc-500">Bathrooms</span>
+                       <span>{property.specs.baths}</span>
+                    </div>
+                    <div className="flex justify-between border-b border-current/10 pb-2">
+                       <span className="text-zinc-500">SqFt</span>
+                       <span>{property.specs.sqft}</span>
+                    </div>
+                 </div>
+                 <Button className="w-full" isDark={isDark}>Schedule Viewing</Button>
+              </div>
+
+              {/* Mortgage Calculator Integration */}
+              {property.priceRaw > 0 && (
+                <MortgageCalculator price={property.priceRaw} isDark={isDark} t={t} />
+              )}
+
+              <div>
+                <h3 className="text-lg font-light uppercase tracking-widest mb-6 flex items-center gap-2">
+                   <Thermometer size={16} /> {t.properties.details.risks}
+                </h3>
+                <div className="space-y-6">
+                   <div>
+                     <div className="flex justify-between text-xs font-mono uppercase mb-2">
+                       <span>Flood Risk</span>
+                       <span>{property.analytics.risks.flood}/100</span>
+                     </div>
+                     <div className={`h-2 w-full rounded-full ${isDark ? 'bg-zinc-800' : 'bg-zinc-200'}`}>
+                        <div style={{ width: `${property.analytics.risks.flood}%` }} className="h-full bg-blue-500 rounded-full"></div>
+                     </div>
+                   </div>
+                   <div>
+                     <div className="flex justify-between text-xs font-mono uppercase mb-2">
+                       <span>Fire Risk</span>
+                       <span>{property.analytics.risks.fire}/100</span>
+                     </div>
+                     <div className={`h-2 w-full rounded-full ${isDark ? 'bg-zinc-800' : 'bg-zinc-200'}`}>
+                        <div style={{ width: `${property.analytics.risks.fire}%` }} className="h-full bg-orange-500 rounded-full"></div>
+                     </div>
+                   </div>
+                   <div>
+                     <div className="flex justify-between text-xs font-mono uppercase mb-2">
+                       <span>Heat Risk</span>
+                       <span>{property.analytics.risks.heat}/100</span>
+                     </div>
+                     <div className={`h-2 w-full rounded-full ${isDark ? 'bg-zinc-800' : 'bg-zinc-200'}`}>
+                        <div style={{ width: `${property.analytics.risks.heat}%` }} className="h-full bg-red-500 rounded-full"></div>
+                     </div>
+                   </div>
+                </div>
+              </div>
+           </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const TestimonialsSection = ({ t, isDark }) => (
+  <div className={`py-24 border-t ${isDark ? 'border-white/10 bg-black' : 'border-black/10 bg-white'}`}>
+    <div className="max-w-[1800px] mx-auto px-6 md:px-12">
+      <SectionHeading number="03" title={t.testimonials.section} isDark={isDark} />
+      
+      {/* Fixed: Added pr-12 to container and min-w logic to ensure last card isn't cut off 
+         The right padding on the container allows the last element to fully scroll into view.
+      */}
+      <div 
+        className="flex overflow-x-auto gap-8 md:gap-16 pb-8 snap-x px-1" 
+        style={{ scrollbarWidth: 'none' }}
+      >
+        {TESTIMONIALS.map((item) => (
+          <div key={item.id} className="min-w-[85vw] md:min-w-[600px] snap-center shrink-0">
+            <h3 className={`text-2xl md:text-4xl font-serif italic leading-relaxed mb-8 ${isDark ? 'text-zinc-200' : 'text-zinc-800'}`}>
+              "{item.quote}"
+            </h3>
+            <div className="flex items-center gap-4">
+              <div className={`w-12 h-[1px] ${isDark ? 'bg-white' : 'bg-black'}`}></div>
+              <div>
+                <p className={`font-bold uppercase tracking-widest text-sm ${isDark ? 'text-white' : 'text-black'}`}>{item.author}</p>
+                <p className="text-xs font-mono text-zinc-500">{item.role}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+        {/* Spacer for right padding on mobile scroll */}
+        <div className="w-1 shrink-0"></div>
+      </div>
+    </div>
+  </div>
+);
+
+// --- Page Content Helpers ---
+
+const PropertyGridContent = ({ t, isDark, navBg, textMain, onPropertyClick }) => {
+  const [filter, setFilter] = useState('all');
+
+  const filteredProperties = PROPERTIES.filter(p => {
+    if (filter === 'all') return true;
+    return p.status === filter;
+  });
+
+  return (
+    <div className={`py-24 px-6 md:px-12 max-w-[1800px] mx-auto border-x ${isDark ? 'border-white/5' : 'border-black/5'} min-h-screen`}>
+      <SectionHeading number="02" title={t.properties.section} isDark={isDark} />
+      <div className={`sticky top-20 z-30 py-4 mb-12 flex justify-between items-center border-b ${navBg} backdrop-blur-md transition-colors duration-500 ${isDark ? 'border-white/10' : 'border-black/10'}`}>
+        <div 
+          className="flex gap-6 md:gap-12 overflow-x-auto pb-2 md:pb-0" 
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }} 
+        >
+          {['all', 'active', 'sold', 'underContract'].map((f) => (
+            <button 
+              key={f}
+              onClick={() => setFilter(f)}
+              className={`
+                text-sm uppercase tracking-widest font-bold transition-all duration-300 ${textMain} 
+                ${filter === f ? 'opacity-100 border-b-2 border-current' : 'opacity-50 hover:opacity-100'}
+              `}
+            >
+              {t.properties.filter[f]}
+            </button>
+          ))}
+        </div>
+        <div className="hidden md:flex items-center gap-2 text-zinc-500 text-xs font-mono">
+          <Filter size={12} />
+          {filteredProperties.length} {t.properties.count}
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+        {filteredProperties.map((property, idx) => (
+          <PropertyCard 
+            key={property.id} 
+            property={property} 
+            t={t} 
+            isDark={isDark} 
+            index={idx} 
+            onClick={() => onPropertyClick(property)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const AboutContent = ({ t, isDark, textMain }) => (
+  <div className={`py-24 px-6 md:px-12 max-w-[1800px] mx-auto border-x ${isDark ? 'border-white/5' : 'border-black/5'} ${isDark ? 'bg-zinc-950' : 'bg-zinc-50'} transition-colors duration-700`}>
+    <SectionHeading number="01" title={t.about.section} isDark={isDark} />
+    <div className="grid md:grid-cols-12 gap-12">
+      <div className={`md:col-span-5 h-full min-h-[500px] relative transition-colors duration-700 ${isDark ? 'bg-zinc-900' : 'bg-zinc-200'}`}>
+          <Reveal className="h-full">
+            <img 
+              src="https://i.ibb.co/FLXQV6Wk/Gemini-Generated-Image-vmxd4tvmxd4tvmxd.png" 
+              alt="Katrina Wang" 
+              className="absolute inset-0 w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+              onError={(e) => {
+                e.target.src = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop"; 
+                e.target.alt = "Placeholder";
+              }}
+            />
+          </Reveal>
+          <div className="absolute bottom-4 left-4 bg-black/50 backdrop-blur-md px-3 py-1 text-white text-xs font-mono">
+            Katrina Wang
+          </div>
+      </div>
+      <div className="md:col-span-7 flex flex-col justify-center space-y-8">
+        <Reveal>
+          <div>
+            <h3 className={`text-2xl font-light mb-2 ${textMain}`}>Katrina Wang</h3>
+            <p className="text-zinc-500 font-mono text-xs uppercase tracking-widest">{t.about.role}</p>
+          </div>
+        </Reveal>
+        <Reveal delay={100}>
+          <p className={`leading-relaxed font-light text-lg ${isDark ? 'text-zinc-300' : 'text-zinc-700'}`}>{t.about.bio}</p>
+        </Reveal>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+          <Reveal delay={200} className={`p-6 border ${isDark ? 'bg-zinc-900/50 border-white/5' : 'bg-white border-black/5'}`}>
+              <Building2 className={`mb-4 ${textMain}`} size={24} />
+              <h4 className="font-bold text-sm uppercase mb-2">{t.about.cards.portfolio}</h4>
+              <p className="text-sm text-zinc-500">{t.about.cards.portfolio_desc}</p>
+          </Reveal>
+          <Reveal delay={300} className={`p-6 border ${isDark ? 'bg-zinc-900/50 border-white/5' : 'bg-white border-black/5'}`}>
+              <TrendingUp className={`mb-4 ${textMain}`} size={24} />
+              <h4 className="font-bold text-sm uppercase mb-2">{t.about.cards.investment}</h4>
+              <p className="text-sm text-zinc-500">{t.about.cards.investment_desc}</p>
+          </Reveal>
+        </div>
+        <Reveal delay={400}>
+          <p className="text-zinc-500 text-sm italic border-l-2 border-zinc-500/20 pl-4">"{t.about.quote}"</p>
+        </Reveal>
+      </div>
+    </div>
+  </div>
+);
+
+const ContactContent = ({ t, isDark, inputBorder }) => (
+  <div className={`py-24 px-6 md:px-12 max-w-[1800px] mx-auto border-x ${isDark ? 'border-white/5' : 'border-black/5'} min-h-[80vh] flex flex-col justify-center`}>
+    <div className="grid md:grid-cols-2 gap-16">
+      <div>
+        <SectionHeading number="04" title={t.contact.section} isDark={isDark} />
+        <Reveal>
+          <p className={`text-xl font-light leading-relaxed mb-12 ${isDark ? 'text-zinc-300' : 'text-zinc-700'}`}>
+            {t.contact.desc}
+          </p>
+        </Reveal>
+        <div className="space-y-6">
+          <Reveal delay={100} className="group">
+              <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest block mb-1">{t.contact.labels.phone}</span>
+              <div className={`flex items-center gap-4 transition-colors cursor-pointer ${isDark ? 'text-white hover:text-zinc-400' : 'text-black hover:text-zinc-600'}`}>
+                <Phone size={18} />
+                <span className="text-2xl font-light">718-757-6068</span>
+              </div>
+          </Reveal>
+          <Reveal delay={200} className="group">
+              <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest block mb-1">{t.contact.labels.email}</span>
+              <div className={`flex items-center gap-4 transition-colors cursor-pointer ${isDark ? 'text-white hover:text-zinc-400' : 'text-black hover:text-zinc-600'}`}>
+                <Mail size={18} />
+                <span className="text-2xl font-light">bnlwang@gmail.com</span>
+              </div>
+          </Reveal>
+          <Reveal delay={300} className="group">
+              <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest block mb-1">{t.contact.labels.office}</span>
+              <div className={`flex items-start gap-4 transition-colors cursor-pointer ${isDark ? 'text-white hover:text-zinc-400' : 'text-black hover:text-zinc-600'}`}>
+                <MapPin size={18} className="mt-1" />
+                <span className="text-xl font-light max-w-xs">140-75 Ash Ave. Office 2E <br/> Flushing, NY 11355</span>
+              </div>
+          </Reveal>
+        </div>
+      </div>
+      <Reveal delay={400}>
+        <form className={`space-y-8 mt-8 md:mt-0 p-8 border ${isDark ? 'bg-zinc-900/20 border-white/5' : 'bg-zinc-50 border-black/5'}`} onSubmit={(e) => e.preventDefault()}>
+          <div className="space-y-2 group">
+            <label className="text-xs font-mono uppercase text-zinc-500">{t.contact.form.name}</label>
+            <input type="text" className={`w-full bg-transparent border-b py-3 text-lg focus:outline-none transition-colors ${inputBorder} ${isDark ? 'focus:border-white' : 'focus:border-black'}`} />
+          </div>
+          <div className="space-y-2 group">
+            <label className="text-xs font-mono uppercase text-zinc-500">{t.contact.form.email}</label>
+            <input type="email" className={`w-full bg-transparent border-b py-3 text-lg focus:outline-none transition-colors ${inputBorder} ${isDark ? 'focus:border-white' : 'focus:border-black'}`} />
+          </div>
+          <div className="space-y-2 group">
+            <label className="text-xs font-mono uppercase text-zinc-500">{t.contact.form.interest}</label>
+            <CustomDropdown 
+              options={t.contact.options} 
+              value={null} 
+              onChange={() => {}} 
+              isDark={isDark} 
+              placeholder="Select an option"
+            />
+          </div>
+          <div className="pt-8">
+            <Button className="w-full" isDark={isDark}>{t.contact.form.submit}</Button>
+          </div>
+        </form>
+      </Reveal>
+    </div>
+  </div>
+);
+
+// --- Main Layout ---
+
+export default function App() {
+  const [view, setView] = useState('home'); 
+  const [selectedProperty, setSelectedProperty] = useState(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [isDark, setIsDark] = useState(true);
+  const [lang, setLang] = useState('en');
+
+  const t = TRANSLATIONS[lang];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setIsMenuOpen(false);
+  }, [view]);
+
+  // Prevent background scroll when property detail is open
+  useEffect(() => {
+    if (selectedProperty) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [selectedProperty]);
+
+  const bgMain = isDark ? 'bg-black' : 'bg-white';
+  const textMain = isDark ? 'text-white' : 'text-black';
+  const borderLight = isDark ? 'border-white/5' : 'border-black/5';
+  const navBg = isDark ? 'bg-black/80' : 'bg-white/80';
+  const inputBorder = isDark ? 'border-zinc-700' : 'border-zinc-300';
+
+  const toggleTheme = () => setIsDark(!isDark);
+  const toggleLang = () => setLang(lang === 'en' ? 'zh' : 'en');
+
+  const handleNav = (targetView) => {
+    setView(targetView);
+    setIsMenuOpen(false);
+    setSelectedProperty(null);
+  };
+
+  return (
+    <div className={`${bgMain} ${textMain} min-h-screen font-sans selection:bg-zinc-500 selection:text-white transition-colors duration-700 ease-in-out`}>
+      
+      {/* Property Details Overlay */}
+      {selectedProperty && (
+        <PropertyDetailOverlay 
+          property={selectedProperty} 
+          onClose={() => setSelectedProperty(null)} 
+          isDark={isDark}
+          t={t}
+        />
+      )}
+
+      {/* Navigation */}
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ease-in-out ${scrolled ? `${navBg} backdrop-blur-md py-4 border-b ${borderLight}` : 'py-8'}`}>
+        <div className="max-w-[1800px] mx-auto px-6 md:px-12 flex justify-between items-center">
+          <div 
+            className="flex flex-col cursor-pointer z-50 group" 
+            onClick={() => handleNav('home')}
+          >
+            <span className="text-2xl font-bold tracking-tighter uppercase transition-opacity hover:opacity-80">KATRINA WANG</span>
+            <span className="text-[10px] font-mono tracking-widest text-zinc-500 uppercase">Real Estate</span>
+          </div>
+
+          <div className="hidden md:flex items-center gap-8 text-sm uppercase tracking-widest font-medium">
+            <button onClick={() => handleNav('properties')} className={`hover:text-zinc-500 transition-all duration-300 ${view === 'properties' ? 'underline underline-offset-8 decoration-1' : ''}`}>{t.nav.properties}</button>
+            <button onClick={() => handleNav('about')} className={`hover:text-zinc-500 transition-all duration-300 ${view === 'about' ? 'underline underline-offset-8 decoration-1' : ''}`}>{t.nav.about}</button>
+            <button onClick={() => handleNav('contact')} className={`hover:text-zinc-500 transition-all duration-300 ${view === 'contact' ? 'underline underline-offset-8 decoration-1' : ''}`}>{t.nav.contact}</button>
+            
+            <div className={`h-4 w-px transition-colors duration-500 ${isDark ? 'bg-white/20' : 'bg-black/20'}`}></div>
+
+            <div className="flex items-center gap-4">
+              <button onClick={toggleLang} className="flex items-center gap-2 hover:text-zinc-500 transition-colors duration-300">
+                 <Globe size={16} />
+                 <span>{lang === 'en' ? 'EN' : '中文'}</span>
+              </button>
+              <button onClick={toggleTheme} className="hover:text-zinc-500 transition-colors duration-300">
+                {isDark ? <Sun size={18} /> : <Moon size={18} />}
+              </button>
+            </div>
+          </div>
+
+          <button className="md:hidden z-50 transition-transform duration-300 hover:rotate-90" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <X /> : <Menu />}
+          </button>
+        </div>
+      </nav>
+
+      <div className={`
+        fixed inset-0 z-40 flex flex-col justify-center items-center gap-8 text-2xl uppercase font-light tracking-widest transition-all duration-500 ease-in-out
+        ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}
+        ${bgMain} ${textMain}
+      `}>
+         <button onClick={() => handleNav('home')} className="hover:scale-110 transition-transform duration-300">{t.nav.home}</button>
+         <button onClick={() => handleNav('properties')} className="hover:scale-110 transition-transform duration-300">{t.nav.properties}</button>
+         <button onClick={() => handleNav('about')} className="hover:scale-110 transition-transform duration-300">{t.nav.about}</button>
+         <button onClick={() => handleNav('contact')} className="hover:scale-110 transition-transform duration-300">{t.nav.contact}</button>
+         <div className="flex gap-8 mt-8">
+           <button onClick={toggleLang} className="text-sm border border-current px-4 py-2">{lang === 'en' ? 'EN' : '中文'}</button>
+           <button onClick={toggleTheme} className="text-sm border border-current px-4 py-2">{isDark ? 'Light' : 'Dark'}</button>
+         </div>
+      </div>
+
+      {/* Main Content Router */}
+      <main className="min-h-screen">
+        {view === 'home' && (
+          <>
+            <div className={`relative min-h-[90vh] flex flex-col justify-center pt-32 pb-12 px-6 md:px-12 border-x ${borderLight} mx-auto max-w-[1800px]`}>
+              <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] rounded-full blur-[100px] pointer-events-none transition-colors duration-1000 ${isDark ? 'bg-zinc-900/30' : 'bg-zinc-200/50'}`}></div>
+              <div className="z-10 max-w-4xl">
+                <Reveal>
+                  <p className="text-zinc-500 font-mono text-xs uppercase tracking-[0.2em] mb-4"> {t.hero.subtitle} </p>
+                </Reveal>
+                <div className={`text-6xl md:text-8xl font-light tracking-tighter leading-[0.9] mix-blend-difference mb-8 ${isDark ? 'text-white' : 'text-black'}`}>
+                  <Reveal delay={100}>{t.hero.title[0]}</Reveal>
+                  <Reveal delay={200}>{t.hero.title[1]}</Reveal>
+                  <Reveal delay={300}><span className="italic font-serif">{t.hero.title[2]}</span></Reveal>
+                </div>
+                <Reveal delay={400}>
+                  <p className={`max-w-xl font-light text-lg leading-relaxed border-l pl-6 mt-8 ${isDark ? 'text-zinc-400 border-white/30' : 'text-zinc-600 border-black/30'}`}>
+                    "{t.hero.desc}"
+                  </p>
+                </Reveal>
+              </div>
+              <div className="z-10 flex flex-col md:flex-row justify-between items-end gap-8 mt-16">
+                <Reveal delay={500} className="flex gap-4">
+                  <Button onClick={() => handleNav('properties')} isDark={isDark}>{t.hero.cta_collection}</Button>
+                  <Button secondary onClick={() => handleNav('contact')} isDark={isDark}>{t.hero.cta_contact}</Button>
+                </Reveal>
+                <Reveal delay={600} className="flex gap-12 text-xs font-mono text-zinc-500 uppercase tracking-widest text-right">
+                  <div><span className={`block text-xl mb-1 ${textMain}`}>19+</span>{t.hero.stats_exp}</div>
+                  <div><span className={`block text-xl mb-1 ${textMain}`}>NY</span>{t.hero.stats_area}</div>
+                </Reveal>
+              </div>
+            </div>
+
+            <div className={`border-t transition-colors duration-700 ${borderLight}`}>
+               <AboutContent t={t} isDark={isDark} textMain={textMain} />
+            </div>
+
+            <MarketInsights t={t} isDark={isDark} />
+
+            <div className={`border-t transition-colors duration-700 ${borderLight}`}>
+               <PropertyGridContent t={t} isDark={isDark} navBg={navBg} textMain={textMain} onPropertyClick={setSelectedProperty} />
+            </div>
+
+            <TestimonialsSection t={t} isDark={isDark} />
+
+            <div className={`border-t transition-colors duration-700 ${borderLight}`}>
+               <ContactContent t={t} isDark={isDark} inputBorder={inputBorder} />
+            </div>
+          </>
+        )}
+
+        {view === 'about' && (
+          <div className="pt-24">
+            <AboutContent t={t} isDark={isDark} textMain={textMain} />
+            <TestimonialsSection t={t} isDark={isDark} />
+          </div>
+        )}
+
+        {view === 'properties' && (
+           <div className="pt-24">
+             <PropertyGridContent t={t} isDark={isDark} navBg={navBg} textMain={textMain} onPropertyClick={setSelectedProperty} />
+           </div>
+        )}
+
+        {view === 'contact' && (
+          <div className="pt-24">
+            <ContactContent t={t} isDark={isDark} inputBorder={inputBorder} />
+          </div>
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer className={`border-t py-16 px-6 md:px-12 transition-colors duration-700 ${isDark ? 'border-zinc-900 bg-black' : 'border-zinc-200 bg-zinc-50'}`}>
+        <div className="max-w-[1800px] mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
+          <div className="flex flex-col gap-4">
+            <h4 className="text-2xl font-bold tracking-tighter uppercase">KATRINA WANG</h4>
+            <p className="text-zinc-500 text-sm max-w-xs font-mono">140-75 Ash Ave. Office 2E <br/> Flushing, NY 11355</p>
+            <p className="text-zinc-500 text-sm">718-757-6068 | bnlwang@gmail.com</p>
+          </div>
+          <div className="grid grid-cols-2 gap-12 text-sm text-zinc-500">
+             <div className="flex flex-col gap-2">
+               <span className={`font-bold uppercase mb-2 ${textMain}`}>{t.footer.navigate}</span>
+               <button onClick={() => handleNav('home')} className={`text-left transition-colors ${isDark ? 'hover:text-white' : 'hover:text-black'}`}>{t.nav.home}</button>
+               <button onClick={() => handleNav('properties')} className={`text-left transition-colors ${isDark ? 'hover:text-white' : 'hover:text-black'}`}>{t.nav.properties}</button>
+             </div>
+             <div className="flex flex-col gap-2">
+               <span className={`font-bold uppercase mb-2 ${textMain}`}>{t.footer.connect}</span>
+               <a href="#" className={`transition-colors ${isDark ? 'hover:text-white' : 'hover:text-black'}`}>Chase Global Realty</a>
+               <a href="#" className={`transition-colors ${isDark ? 'hover:text-white' : 'hover:text-black'}`}>WeChat</a>
+             </div>
+          </div>
+        </div>
+        <div className={`max-w-[1800px] mx-auto mt-16 pt-8 border-t flex flex-col md:flex-row justify-between items-center text-xs text-zinc-600 font-mono transition-colors duration-700 ${isDark ? 'border-zinc-900' : 'border-zinc-200'}`}>
+          <p>{t.footer.rights}</p>
+          <p>{t.footer.license}</p>
+        </div>
+      </footer>
+    </div>
+  );
+}
