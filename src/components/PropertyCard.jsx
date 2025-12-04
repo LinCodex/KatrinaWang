@@ -30,7 +30,7 @@ const PropertyCard = ({ property, t, isDark, index, onClick }) => {
           <img 
             src={property.image} 
             alt={property.title}
-            className="w-full h-full object-cover transition-all duration-1000 ease-in-out group-hover:scale-105 group-hover:grayscale-0 grayscale opacity-90 group-hover:opacity-100"
+            className="w-full h-full object-cover transition-all duration-1000 ease-in-out group-hover:scale-105 opacity-100"
           />
           
           <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center backdrop-blur-sm bg-black/40">

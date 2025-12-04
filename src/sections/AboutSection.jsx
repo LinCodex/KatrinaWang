@@ -14,7 +14,7 @@ const AboutSection = ({ t, isDark, textMain }) => {
               <img 
                 src="https://i.ibb.co/FLXQV6Wk/Gemini-Generated-Image-vmxd4tvmxd4tvmxd.png" 
                 alt="Katrina Wang" 
-                className="absolute inset-0 w-full h-full object-cover object-top grayscale hover:grayscale-0 transition-all duration-700"
+                className="absolute inset-0 w-full h-full object-cover object-top transition-all duration-700"
                 onError={(e) => {
                   e.target.src = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop"; 
                   e.target.alt = "Placeholder";

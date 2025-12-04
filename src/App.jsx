@@ -21,7 +21,7 @@ export default function App() {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(false);
   const [lang, setLang] = useState('en');
 
   const t = TRANSLATIONS[lang];
